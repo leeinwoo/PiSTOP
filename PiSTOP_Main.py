@@ -1,6 +1,6 @@
 import random, sys, threading, time
-from PiSTOP_GUI import *
-from socket_server import *
+from PiSTOP_Server_GUI import *
+from PiSTOP_Server_Socket import *
 
 player = 3 #플레이어 수(init()에서 변경가능)
 
@@ -730,7 +730,6 @@ def rob_card(player_num):
                 continue
             player_get_card[i].remove(get_blood_card) #상대방 패에서 삭제하고
             player_get_card[player_num].append(get_blood_card)# 내 패로 가져온다
-            remove_card_image("player", get_blood_card, i)
             update_card_image(i, player_get_card[i])
     
 
