@@ -1,6 +1,7 @@
 import random, sys, threading, time
 from PiSTOP_Server_GUI import *
 from PiSTOP_Server_Socket import *
+from PiSTOP_Sound import *
 
 player = 3 #플레이어 수(init()에서 변경가능)
 
@@ -72,8 +73,9 @@ def init():
             break
 
 #게임 시작
-def game_start():    
-    init()    
+def game_start():
+    play_sound("starting")
+    init()
     global player_turn
     for i in range(7*player):
         is_connect()
@@ -87,6 +89,7 @@ def game_start():
             if(player_go_count[player_turn] >= 1): # 고 상태일 경우(이전 점수랑 비교해서 1점이상 획득해야 고/스톱 가능)
                 if(player_score[player_turn] - player_prev_score[player_turn] >= 1):
                     choice_go_stop(player_turn) # 고/스톱 여부 결정
+                    play_sound("go_stop")
             else: # 고 상태가 아닐 경우
                 choice_go_stop(player_turn) # 고/스톱 여부 결정
         player_turn += 1
@@ -96,6 +99,7 @@ def game_start():
 def card_shuffle():
     global card
     random.shuffle(card)
+    play_sound("card_shuffle")
     print ("\n카드를 섞는 중입니다...\n")
     print ("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n")
 
@@ -191,6 +195,7 @@ def throw_card():
         if(hand_count==3): # 같은 카드를 3장 들고있는 경우
             match_count, match_num = cmp_card_list(get_throw_card)
             if(match_count==1): # 바닥에 일치하는 카드가 있는 경우 - 흔들면서 폭탄
+                play_sound("bomb")
                 player_shake_count[player_turn] += 1
                 player_get_card[player_turn].append(match_num[0])
                 temp_card1 = temp_shake.pop()
@@ -316,6 +321,7 @@ def decide_card(get_throw_card):
         elif(match_count2==1): # 뒤집은 카드와 일치하는 카드가 1장 일 때
             if(abs(get_throw_card - draw_card) < 4): # 낸 카드와 뒤집은 카드가 일치하는 경우(쌌을 경우)
                 print("쌌음\n")
+                play_sound("puck")
                 # 카드를 모두 바닥에 놓는다
                 floor_card.append(get_throw_card)
                 floor_card.append(draw_card)
@@ -356,7 +362,7 @@ def decide_card(get_throw_card):
                 print("선택해서 가져옴(1,2)\n")
                 player_get_card[player_turn].append(match_num[0])
                 player_get_card[player_turn].append(get_throw_card)
-                #사용자가 가져갈 카드를 선택한다                
+                #사용자가 가져갈 카드를 선택한다
                 choice = choice_card(match_num2[0], match_num2[1])
                 player_get_card[player_turn].append(choice)
                 player_get_card[player_turn].append(draw_card)
@@ -604,6 +610,7 @@ def decide_card(get_throw_card):
         if(match_count2==0):
             if(abs(get_throw_card - draw_card) < 4): # 낸 카드와 뒤집은 카드가 같은 경우(쪽)
                 print("쪽\n")
+                play_sound("kiss")
                 player_get_card[player_turn].append(draw_card)
                 player_get_card[player_turn].append(get_throw_card)
                 rob_card(player_turn) # 각 플레이어에게 피카드 1장씩 가져온다(있을 경우에만)
@@ -685,10 +692,12 @@ def choice_go_stop(player_num):
 
     if(select==1):
         print("      고!!\n")
+        play_sound("go_1")
         player_go_count[player_num] += 1
         player_prev_score[player_num] = player_score[player_num]
     else:
         print("    스톱!!\n")
+        play_sound("stop")
         game_over(player_num)
     
 #와일드 카드와 함께 싼 경우 와일드 카드 처리 연산
@@ -791,12 +800,15 @@ def calculate_score(player_num, september_state):
     if(band_count[0] == 3):
         player_score[player_num] += 3 #홍단
         print("    홍단: 3점 ")
+        play_sound("redlabel")
     if(band_count[1] == 3):
         player_score[player_num] += 3 #청단
         print("    청단: 3점 ")
+        play_sound("bluelabel")
     if(band_count[2] == 3):
         player_score[player_num] += 3 #초단
         print("    초단: 3점 ")
+        play_sound("grasslabel")
     band_sum = band_count[0] + band_count[1] + band_count[2]
     if(band_sum >= 5):
         player_score[player_num] +=  band_sum-4 #띠 점수
@@ -813,18 +825,23 @@ def calculate_score(player_num, september_state):
         if(light_count[1]==1): #비광 포함
             player_score[player_num] += 2
             print(" 3광(비): 2점 ")
+            play_sound("light_three")
         else: #비광 비포함
             player_score[player_num] += 3
             print("     3광: 3점 ")
+            play_sound("light_three")
     elif(light_sum == 4): #4광
         player_score[player_num] += 4
         print("     4광: 4점 ")
+        play_sound("light_four")
     elif(light_sum == 5): #5광
         player_score[player_num] += 15
         print("     5광: 15점 ")
+        play_sound("light_five")
     if(animal_count[0] == 3):
         player_score[player_num] += 5 #고도리
         print("  고도리: 5점 ")
+        play_sound("godori")
     animal_sum = animal_count[0] + animal_count[1]
     if(animal_sum >= 5):
         player_score[player_num] +=  animal_sum-4 #동물 점수
@@ -835,12 +852,15 @@ def calculate_score(player_num, september_state):
     if(player_go_count[player_num]==1): #1고 - 1점
         player_score[player_num] += 1
         print("     1고: 1점 ")
+        play_sound("go_1")
     elif(player_go_count[player_num]==2): #2고 - 2점
         player_score[player_num] += 2
         print("     2고: 2점 ")
+        play_sound("go_2")
     elif(player_go_count[player_num]==3): #3고 - 2배
         score_double += 1
         print("     3고: 2배 ")
+        play_sound("go_3")
     elif(player_go_count[player_num]==4): #4고 - 4배
         score_double += 2
         print("     4고: 4배 ")
@@ -872,6 +892,7 @@ def game_over(player_num):
                 if(player_oneself[i][1]==True):
                     print("%d번 플레이어는 광박입니다\n" % (i+1))
     print("승자는 %d번 플레이어 입니다!\n" % (player_num+1))
+    play_sound("winner")
     game_start()
     sys.exit()
 
