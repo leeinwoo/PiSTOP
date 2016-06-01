@@ -33,8 +33,8 @@ def init_gui():
     root = Tk() #최상위 위젯 생성
     root.title("PiSTOP - ACTION GOSTOP GAME") #타이틀 설정
     
-    ws = root.winfo_screenwidth()*0.7 #스크린 넓이
-    hs = root.winfo_screenheight()*0.8 #스크린 높이
+    ws = root.winfo_screenwidth() #스크린 넓이
+    hs = root.winfo_screenheight() #스크린 높이
     set_window() #윈도우 창 크기 설정
     
     main_frame = Frame(root, background=floor_color) #메인 프레임 생성(최상위 위젯에 붙임)
@@ -52,7 +52,7 @@ def init_gui():
     
 #창 크기 설정
 def set_window():
-    root.geometry('%dx%d+%d+%d' % (ws, hs, ws*0.05,hs*0.05))
+    root.geometry('%dx%d+%d+%d' % (ws, hs, 0, -35))
 
 #바닥 카드를 위한 월별 프레임 생성
 def create_floorcard_frame():
@@ -120,7 +120,7 @@ def create_floorcard_frame():
 #바닥카드 이미지 레이블 생성(프레임 당 최대 5개 - 쌌을때3장 + 와일드카드2장)
 def create_floor_image_label():
     global floorcard_frame, floorLabels
-    tombCard = Button(main_frame, bg='red', height=3, width=4).place(x=ws*0.46, y=hs*0.30)
+    tombCard = Button(main_frame, bg='red', height=3, width=4, state=DISABLED).place(x=ws*0.46, y=hs*0.30)
     for j in range(len(floorcard_frame)):
         for i in range(5):
             floorCard = Label(floorcard_frame[j], bg=floor_color, text=str(j)+str(i))
@@ -128,63 +128,69 @@ def create_floor_image_label():
 
 #플레이어 획득 카드를 위한 프레임 생성
 def create_getcard_frame():
+    pc1_x=830
+    pc1_y=630
     pc1_blood = Frame(main_frame, bg=floor_color)
     pc1_blood.pack(expand=1)
-    pc1_blood.place(x=ws*0.62, y=hs*0.71)
+    pc1_blood.place(x=pc1_x, y=pc1_y-203)
 
     pc1_band = Frame(main_frame, bg=floor_color)
     pc1_band.pack(expand=1)
-    pc1_band.place(x=ws*0.47, y=hs*0.88)
+    pc1_band.place(x=pc1_x-180, y=pc1_y-50)
 
     pc1_animal = Frame(main_frame, bg=floor_color)
     pc1_animal.pack(expand=1)
-    pc1_animal.place(x=ws*0.32, y=hs*0.88)
+    pc1_animal.place(x=pc1_x-360, y=pc1_y-50)
     
     pc1_light = Frame(main_frame, bg=floor_color)
     pc1_light.pack(expand=1)
-    pc1_light.place(x=ws*0.17, y=hs*0.938)
+    pc1_light.place(x=pc1_x-540, y=pc1_y)
     
     playercard_frame[0].append(pc1_blood)
     playercard_frame[0].append(pc1_band)
     playercard_frame[0].append(pc1_animal)
     playercard_frame[0].append(pc1_light)
 
+    pc2_x=20
+    pc2_y=580
     pc2_blood = Frame(main_frame, bg=floor_color)
     pc2_blood.pack(expand=1)
-    pc2_blood.place(x=ws*0.01, y=hs*0.55)
+    pc2_blood.place(x=pc2_x, y=pc2_y-520)
 
     pc2_band = Frame(main_frame, bg=floor_color)
     pc2_band.pack(expand=1)
-    pc2_band.place(x=ws*0.01, y=hs*0.40)
+    pc2_band.place(x=pc2_x, y=pc2_y-240)
 
     pc2_animal = Frame(main_frame, bg=floor_color)
     pc2_animal.pack(expand=1)
-    pc2_animal.place(x=ws*0.01, y=hs*0.25)
+    pc2_animal.place(x=pc2_x, y=pc2_y-120)
     
     pc2_light = Frame(main_frame, bg=floor_color)
     pc2_light.pack(expand=1)
-    pc2_light.place(x=ws*0.01, y=hs*0.10)
+    pc2_light.place(x=pc2_x, y=pc2_y)
     
     playercard_frame[1].append(pc2_blood)
     playercard_frame[1].append(pc2_band)
     playercard_frame[1].append(pc2_animal)
     playercard_frame[1].append(pc2_light)
 
+    pc3_x=1075
+    pc3_y=580
     pc3_blood = Frame(main_frame, bg=floor_color)
     pc3_blood.pack(expand=1)
-    pc3_blood.place(x=ws*0.87, y=hs*0.05)
+    pc3_blood.place(x=pc3_x, y=pc3_y-520)
 
     pc3_band = Frame(main_frame, bg=floor_color)
     pc3_band.pack(expand=1)
-    pc3_band.place(x=ws*0.87, y=hs*0.38)
+    pc3_band.place(x=pc3_x, y=pc3_y-240)
 
     pc3_animal = Frame(main_frame, bg=floor_color)
     pc3_animal.pack(expand=1)
-    pc3_animal.place(x=ws*0.87, y=hs*0.55)
+    pc3_animal.place(x=pc3_x, y=pc3_y-120)
     
     pc3_light = Frame(main_frame, bg=floor_color)
     pc3_light.pack(expand=1)
-    pc3_light.place(x=ws*0.87, y=hs*0.75)
+    pc3_light.place(x=pc3_x, y=pc3_y)
     
     playercard_frame[2].append(pc3_blood)
     playercard_frame[2].append(pc3_band)
