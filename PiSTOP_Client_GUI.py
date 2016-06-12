@@ -38,6 +38,7 @@ def init_gui():
     create_label()
     
     get_image()
+    set_turn_image()
 
     root.mainloop()
 
@@ -47,7 +48,7 @@ def set_window():
 
 #카드 프레임 생성
 def create_frame():
-    global card_frame, select_frame, throw_frame, answer_frame, gostop_frame
+    global card_frame, select_frame, throw_frame, answer_frame, gostop_frame, turn_frame
     card_frame = Frame(main_frame, bg=bg_color)
     card_frame.pack(expand=1, fill=BOTH)
 
@@ -62,6 +63,10 @@ def create_frame():
 
     gostop_frame = Frame(main_frame, bg=bg_color)
     gostop_frame.pack(expand=1, fill=BOTH)
+
+    turn_frame = Frame(main_frame, bg=bg_color)
+    turn_frame.pack(expand=1, fill=BOTH)
+    turn_frame.place(x=10,y=10)
 
 #카드 이미지 레이블 생성
 def create_label():
@@ -88,6 +93,16 @@ def create_label():
     global throwLabel
     throwLabel = Label(throw_frame, bg=bg_color)
 
+    global turnLabel
+    turnLabel = Label(turn_frame, bg=bg_color)
+
+def set_turn_image():
+    if(my_turn==False):
+        turnLabel.config(image=image[140])        
+    else:
+        turnLabel.config(image=image[141])
+    turnLabel.pack()
+
 #카드 이미지 로드
 def get_image():
     image_count=0
@@ -106,8 +121,13 @@ def get_image():
     image[145] = PhotoImage(file="./res/stop.png")
     for num in range(145,147):
         image[num] = image[num].subsample(2, 2)
+
+    image[140] = PhotoImage(file="./res/turnoff.png")
+    image[141] = PhotoImage(file="./res/turnon.png")
+    image[140] = image[140].subsample(2, 2)
+    image[141] = image[141].subsample(2, 2)
     
-    image_count += 5
+    image_count += 7
         #image[num] = image[num].subsample(2,2)
     print("%d개의 이미지를 로드했습니다." % image_count)
 
@@ -289,8 +309,9 @@ def get_throw_cardImg(card):
     throw_frame.place(x=180,y=50)
     throwLabel.pack(expand=1, fill=BOTH)
 
-"""
+
 init_gui()
+"""
 card=[15,15,15,15,15,15,15]
 update_card()
 clear()
