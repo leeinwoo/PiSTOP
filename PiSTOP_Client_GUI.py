@@ -308,23 +308,3 @@ def get_throw_cardImg(card):
     throwLabel.config(image=image[card])
     throw_frame.place(x=180,y=50)
     throwLabel.pack(expand=1, fill=BOTH)
-
-
-init_gui()
-"""
-card=[15,15,15,15,15,15,15]
-update_card()
-clear()
-zoom_image(2)
-get_throw_cardImg(15)
-subsample_image(2)
-clear()
-update_card()
-clear()
-select_gostop()
-clear()
-select_answer()
-
-root.mainloop()
-
-"""

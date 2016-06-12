@@ -49,7 +49,6 @@ pee_card=[[] for row in range(10)]
 player_turn=0
 
 
-
 #게임 초기화 작업
 def init():
     global player, player_turn, card, client
@@ -63,6 +62,7 @@ def init():
         if(get_client()==3):# 3명이 접속하면 게임을 시작함
             time.sleep(0.5)
             print("게임이 곧 시작됩니다!\n")
+            
             reset_gui()
             time.sleep(3)
             card_shuffle()
@@ -79,7 +79,6 @@ def game_start():
     init()
     global player_turn
     for i in range(7*player):
-        is_connect()
         print("바닥 카드 : %s\n" % floor_card)
         print ("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n")
         set_turn_image(player_turn)
