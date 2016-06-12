@@ -7,32 +7,32 @@ root=0
 ws=0
 hs=0
 
-cardLabels=[0 for i in range(7)] # ¼Õ Ä«µå ÀÌ¹ÌÁö ·¹ÀÌºí
-selectLabels=[0 for i in range(3)] # ¼±ÅÃ Ä«µå ÀÌ¹ÌÁö ·¹ÀÌºí
+cardLabels=[0 for i in range(7)] # ì† ì¹´ë“œ ì´ë¯¸ì§€ ë ˆì´ë¸”
+selectLabels=[0 for i in range(3)] # ì„ íƒ ì¹´ë“œ ì´ë¯¸ì§€ ë ˆì´ë¸”
 answerLabels=[0 for i in range(3)] # answer question image label
 gostopLabels=[0 for i in range(3)] # gostop question image label
 
-bg_color = '#50AF49' #¹è°æ»ö RGB CODE
+bg_color = '#50AF49' #ë°°ê²½ìƒ‰ RGB CODE
 
-image = [0 for i in range(150)] #·Îµå ÀÌ¹ÌÁö
+image = [0 for i in range(150)] #ë¡œë“œ ì´ë¯¸ì§€
 card=[]
 tmp_throw_card=0
 throw_card=0
 my_turn=False
 select_index=0
 
-#GUI ÃÊ±âÈ­
+#GUI ì´ˆê¸°í™”
 def init_gui():
     global root, ws, hs, main_frame
-    root = Tk() #ÃÖ»óÀ§ À§Á¬ »ı¼º
-    root.title("PiSTOP - ACTION GOSTOP GAME") #Å¸ÀÌÆ² ¼³Á¤
+    root = Tk() #ìµœìƒìœ„ ìœ„ì ¯ ìƒì„±
+    root.title("PiSTOP - ACTION GOSTOP GAME") #íƒ€ì´í‹€ ì„¤ì •
     
-    ws = root.winfo_screenwidth() #½ºÅ©¸° ³ĞÀÌ
-    hs = root.winfo_screenheight() #½ºÅ©¸° ³ôÀÌ
-    set_window() #À©µµ¿ì Ã¢ Å©±â ¼³Á¤
+    ws = root.winfo_screenwidth() #ìŠ¤í¬ë¦° ë„“ì´
+    hs = root.winfo_screenheight() #ìŠ¤í¬ë¦° ë†’ì´
+    set_window() #ìœˆë„ìš° ì°½ í¬ê¸° ì„¤ì •
     
-    main_frame = Frame(root, background=bg_color) #¸ŞÀÎ ÇÁ·¹ÀÓ »ı¼º(ÃÖ»óÀ§ À§Á¬¿¡ ºÙÀÓ)
-    main_frame.pack(fill=BOTH, expand=1) #Ãâ·Â
+    main_frame = Frame(root, background=bg_color) #ë©”ì¸ í”„ë ˆì„ ìƒì„±(ìµœìƒìœ„ ìœ„ì ¯ì— ë¶™ì„)
+    main_frame.pack(fill=BOTH, expand=1) #ì¶œë ¥
     
     create_frame()
     create_label()
@@ -42,11 +42,11 @@ def init_gui():
 
     root.mainloop()
 
-#Ã¢ Å©±â ¼³Á¤
+#ì°½ í¬ê¸° ì„¤ì •
 def set_window():
-    root.geometry('%dx%d+%d+%d' % (ws/2, hs/2, 0, 0))
+    root.geometry('%dx%d+%d+%d' % (ws, hs, 0, -30))
 
-#Ä«µå ÇÁ·¹ÀÓ »ı¼º
+#ì¹´ë“œ í”„ë ˆì„ ìƒì„±
 def create_frame():
     global card_frame, select_frame, throw_frame, answer_frame, gostop_frame, turn_frame
     card_frame = Frame(main_frame, bg=bg_color)
@@ -68,7 +68,7 @@ def create_frame():
     turn_frame.pack(expand=1, fill=BOTH)
     turn_frame.place(x=10,y=10)
 
-#Ä«µå ÀÌ¹ÌÁö ·¹ÀÌºí »ı¼º
+#ì¹´ë“œ ì´ë¯¸ì§€ ë ˆì´ë¸” ìƒì„±
 def create_label():
     for i in range(7):
         my_card = Label(card_frame, bg=bg_color)
@@ -103,7 +103,7 @@ def set_turn_image():
         turnLabel.config(image=image[141])
     turnLabel.pack()
 
-#Ä«µå ÀÌ¹ÌÁö ·Îµå
+#ì¹´ë“œ ì´ë¯¸ì§€ ë¡œë“œ
 def get_image():
     image_count=0
     for num in range(len(image)):
@@ -129,7 +129,7 @@ def get_image():
     
     image_count += 7
         #image[num] = image[num].subsample(2,2)
-    print("%d°³ÀÇ ÀÌ¹ÌÁö¸¦ ·ÎµåÇß½À´Ï´Ù." % image_count)
+    print("%dê°œì˜ ì´ë¯¸ì§€ë¥¼ ë¡œë“œí–ˆìŠµë‹ˆë‹¤." % image_count)
 
 #card image zoom
 def zoom_image(multi):    
@@ -147,7 +147,7 @@ def subsample_image(sub):
         except:
             continue
     
-#Ä«µå ÀÌ¹ÌÁö °»½Å
+#ì¹´ë“œ ì´ë¯¸ì§€ ê°±ì‹ 
 def update_card():    
     global card
     clear()
@@ -157,7 +157,7 @@ def update_card():
         cardLabels[i].grid(row=4-int(i/4), column=i%4)
         cardLabels[i].bind("<Button-1>",onclick_hand)
 
-#ÀüÃ¼ ÀÌ¹ÌÁö »èÁ¦
+#ì „ì²´ ì´ë¯¸ì§€ ì‚­ì œ
 def clear():
     global throwLabel
     for i in range(7):
@@ -176,7 +176,7 @@ def clear():
     answer_frame.place(x=1000,y=1000)
     gostop_frame.place(x=1000,y=1000)
 
-#Ä«µå ¼±ÅÃ
+#ì¹´ë“œ ì„ íƒ
 def select_card(select1, select2):
     clear()
     zoom_image(2)
@@ -189,7 +189,7 @@ def select_card(select1, select2):
     selectLabels[1].grid(row=0, column=1)
     selectLabels[1].bind("<Button-1>", onclick_select)
 
-# yes, no ¼±ÅÃ
+# yes, no ì„ íƒ
 def select_answer():
     clear()
     answer_frame.place(x=70,y=50)
@@ -204,7 +204,7 @@ def select_answer():
     answerLabels[2].pack()
     answerLabels[2].bind("<Button-1>", onclick_answer)
 
-#go, stop ¼±ÅÃ
+#go, stop ì„ íƒ
 def select_gostop():
     clear()
     gostop_frame.place(x=130,y=40)
