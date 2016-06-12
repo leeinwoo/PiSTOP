@@ -1,16 +1,14 @@
 import socket
 import threading
+from PiSTOP_Client_GUI import *
 
 #플레이어 손 카드
 my_hand=[]
 
-#플레이어 순서
-my_turn=0
-
 #선택 할 카드 리스트
 choice_list=[]
 
-HOST='127.0.0.1' #localhost
+HOST='192.168.219.109' #localhost
 PORT=50007 #서버와 같은 포트사용
 s=socket.socket(socket.AF_INET, socket.SOCK_STREAM) #소켓생성
 s.connect((HOST,PORT))
@@ -27,14 +25,19 @@ def recv_msg():
         r_data = repr(r_data.decode('utf-8'))
         r_data = r_data.strip('\'')
         command,r_data = r_data.split(' ',1)
-        if(command=="hand"):
+        if(command=="hand"):            
             global my_hand
             r_data = r_data.strip('\'[]')
             r_data = r_data.split(', ')
             my_hand=r_data            
+            for i in range(len(my_hand)):
+                my_hand[i] = int(my_hand[i])
+            set_hand(my_hand)
+            update_card()
         if(command=="turn"):
-            my_turn = int(r_data)
+            set_turnFlag(True)
             throw_card()
+            print("throw")
         if(command=="choice"):
             global choice_list
             r_data = r_data.strip('\'[]')
@@ -48,28 +51,31 @@ def recv_msg():
         if(command=="connect"):
             send_msg("connect", 1)
 def throw_card():
-    #낼 카드를 선택하고 카드를 낸다
-    global my_hand
-    print(my_hand,"\n")
-    print("내 차례입니다!\n")
-    select = int(input('낼 카드의 index>> '))
-    send_msg("throw",my_hand[select])
+    #낼 카드를 선택하고 카드를 낸다    
+    while 1:
+        n = get_throw_card()
+        if(n!=0):          
+            send_msg("throw", n)
+            set_throw_card(0)
+            set_turnFlag(False)
+            return
 
 def choice_card():
     global choice_list
-    print(choice_list)
-    choice = int(input('가져올 카드의 index>> '))
-    send_msg("choice",choice_list[choice])
+    select_card(int(choice_list[0]),int(choice_list[1]))
+    while 1:
+        if(get_select_index() != 0):
+            send_msg("choice",choice_list[get_select_index()])
 
 def choice_shake():
-    choice = int(input('흔드시겠습니까? 예(1), 아니오(0)>> '))
-    send_msg("shake",choice)
+    while 1:
+        if(get_answer_index() != 0):
+            send_msg("shake", get_answer_index())
 
 def choice_go_stop():
-    choice = int(input('GO/STOP 여부를 결정하세요 - GO(1), STOP(0)>>'))
-    send_msg("gostop",choice)
+    while 1:
+        if(get_gostop_index() != 0):
+            send_msg("gostop", get_gostop_index())
 
-#threading._start_new_thread(send_msg,())
 threading._start_new_thread(recv_msg,())
-
-#s.close()
+threading._start_new_thread(init_gui,())
