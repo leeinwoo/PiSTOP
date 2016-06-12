@@ -21,7 +21,7 @@ playerBandCards = [[] for i in range(3)] #플레이어 띠 카드 목록
 playerAnimalCards = [[] for i in range(3)] #플레이어 동물 카드 목록
 playerLightCards = [[] for i in range(3)] #플레이어 광 카드 목록
 
-image = [0 for i in range(130)] #로드 이미지
+image = [0 for i in range(140)] #로드 이미지
 
 #카드 사이즈
 card_height=45
@@ -45,8 +45,12 @@ def init_gui():
 
     create_getcard_frame()
     create_player_image_label()
+
+    create_turn_frame()
+    create_turn_image_label()   
     
     get_image()
+    set_turn_image()
 
     root.mainloop()
     
@@ -197,6 +201,52 @@ def create_getcard_frame():
     playercard_frame[2].append(pc3_animal)
     playercard_frame[2].append(pc3_light)
 
+#플레이어 턴 이미지를 위한 프레임 생성
+def create_turn_frame():
+    global turn1_frame, turn2_frame, turn3_frame
+
+    turn1_frame = Frame(main_frame, bg=floor_color)
+    turn1_frame.pack(expand=1)
+    turn1_frame.place(x=275,y=570)
+
+    turn2_frame = Frame(main_frame, bg=floor_color)
+    turn2_frame.pack(expand=1)
+    turn2_frame.place(x=5,y=0)
+
+    turn3_frame = Frame(main_frame, bg=floor_color)
+    turn3_frame.pack(expand=1)
+    turn3_frame.place(x=1060,y=0)
+
+#플레이어 턴 이미지 레이블 생성
+def create_turn_image_label():
+    global turn1Label, turn2Label, turn3Label
+
+    turn1Label = Label(turn1_frame, bg=floor_color)     
+    turn2Label = Label(turn2_frame, bg=floor_color)     
+    turn3Label = Label(turn3_frame, bg=floor_color)   
+
+#플레이어 턴 이미지 출력
+def set_turn_image(turn=0):
+    if(turn==0):
+        turn1Label.config(image=image[131])
+        turn2Label.config(image=image[132])
+        turn3Label.config(image=image[134])        
+    elif(turn==1):
+        turn1Label.config(image=image[130])
+        turn2Label.config(image=image[133])
+        turn3Label.config(image=image[134])
+    elif(turn==2):
+        turn1Label.config(image=image[130])
+        turn2Label.config(image=image[132])
+        turn3Label.config(image=image[135])
+    else:
+        turn1Label.config(image=image[130])
+        turn2Label.config(image=image[132])
+        turn3Label.config(image=image[134])
+    turn1Label.pack()
+    turn2Label.pack()
+    turn3Label.pack()
+        
 #플레이어 획득 카드 이미지 레이블 생성
 def create_player_image_label():
     global playercard_frame, playerBloodLabels, playerBandLabels, playerAnimalLabels, playerLightLabels
@@ -231,6 +281,17 @@ def get_image():
         except :            
             continue            
         image[num] = image[num].subsample(2,2)
+    image[130] = PhotoImage(file="./res/playeroff1.png")
+    image[131] = PhotoImage(file="./res/playeron1.png")
+    image[132] = PhotoImage(file="./res/playeroff2.png")
+    image[133] = PhotoImage(file="./res/playeron2.png")
+    image[134] = PhotoImage(file="./res/playeroff3.png")
+    image[135] = PhotoImage(file="./res/playeron3.png")    
+    for num in range(130,136):
+        image[num] = image[num].subsample(2,2)
+        
+    image_count += 6
+    
     print("%d개의 이미지를 로드했습니다." % image_count)
 
 #카드 이미지 출력
