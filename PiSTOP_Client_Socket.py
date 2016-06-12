@@ -36,6 +36,7 @@ def recv_msg():
             update_card()
         if(command=="turn"):
             set_turnFlag(True)
+            set_turn_image()
             throw_card()
             print("throw")
         if(command=="choice"):
@@ -58,6 +59,7 @@ def throw_card():
             send_msg("throw", n)
             set_throw_card(0)
             set_turnFlag(False)
+            set_turn_image()
             return
 
 def choice_card():
